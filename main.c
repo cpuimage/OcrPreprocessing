@@ -87,9 +87,7 @@ void splitpath(const char *path, char *drv, char *dir, char *name, char *ext) {
         *dir = '\0';
     }
 }
-
-#define float2fixed(x)  (((int)((x)* 4096.0f + 0.5f)) << 8)
-
+ 
 void rgb2ycbcr(uint8_t R, uint8_t G, uint8_t B, uint8_t *y, uint8_t *cb, uint8_t *cr) {
     *y = (int8_t) ((19595 * R + 38470 * G + 7471 * B) >> 16);
     *cb = (int8_t) (((36962 * (B - *y)) >> 16) + 128);
@@ -361,8 +359,8 @@ int main(int argc, char **argv) {
         if (output) {
             // LocalColor Version
             if (true) {
-                uint8_t sampleR = 0;
-                uint8_t sampleG = 255;
+                uint8_t sampleR = 255;
+                uint8_t sampleG = 0;
                 uint8_t sampleB = 0;
                 int32_t tolerance = 50;
                 CPUImageLocalColorFilter(input, output, width, height, channels, sampleR, sampleG, sampleB, tolerance);
@@ -373,7 +371,7 @@ int main(int argc, char **argv) {
                 saveImage(out_file, width, height, 1, output);
             } else {
                 // Simple Version
-                int extractChannels = 2;
+                int extractChannels = 0;
                 uint32_t histogram[256] = {0};
                 colorFilterExtract(input, output, width, height, channels, histogram, extractChannels);
                 saveImage(out_file, width, height, 1, output);
